@@ -1,11 +1,6 @@
-<?xml version="1.0" encoding="ASCII"?>
-<caex:DocumentRoot
-    xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI"
-    xmlns:caex="http://www.dke.de/CAEX/">
-  <cAEXFile
-      fileName="airquality.aml"
-      schemaVersion="3.0">
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<caex:DocumentRoot xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:caex="http://www.dke.de/CAEX/300">
+  <cAEXFile fileName="airquality.aml" schemaVersion="3.0">
     <superiorStandardVersion>AutomationML 2.10</superiorStandardVersion>
     <sourceDocumentInformation
         lastWritingDateTime="2021-03-11T08:13:21.5275116+01:00"

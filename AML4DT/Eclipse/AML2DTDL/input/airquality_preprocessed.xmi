@@ -2,7 +2,7 @@
 <caex:DocumentRoot
     xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI"
-    xmlns:caex="http://www.dke.de/CAEX/">
+    xmlns:caex="http://www.dke.de/CAEX/300">
   <cAEXFile
       fileName="airquality.aml"
       schemaVersion="3.0">
