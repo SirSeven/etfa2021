@@ -14,8 +14,8 @@ unique lazy rule newInterface {
 	do{
 		--'SuC to be created: '.println();
 		--cl.name.println();
-		if(cl.iD.oclType().toString() <> 'Void'){
-			if(cl.version.oclType().toString() <> 'Void'){
+		if(cl.iD.oclType().toString() <> 'Void' and cl.iD.oclType().toString() <> 'OclAny'){
+			if(cl.version.oclType().toString() <> 'Void' and cl.version.oclType().toString() <> 'OclAny'){
 				interf.id <- thisModule.newDTMI('dtmi', cl.iD, cl.version);
 			}else{
 				interf.id <- thisModule.newDTMI('dtmi', cl.iD, 1);
@@ -66,17 +66,17 @@ rule newTelemetry(attr: CAEX!Attribute){
 		name <- attr.name		
 	)
 	do{
-		if(attr.iD.oclType().toString() <> 'Void'){
-			if(attr.version.oclType().toString() <> 'Void'){
+		if(attr.iD.oclType().toString() <> 'Void' and attr.iD.oclType().toString() <> 'OclAny'){
+			if(attr.version.oclType().toString() <> 'Void' and attr.version.oclType().toString() <> 'OclAny'){
 				telem.id <- thisModule.newDTMI('dtmi', attr.iD, attr.version);
 			}else{
-				telem.id <- thisModule.newDTMI('dtmi', attr.iD, 1);
+				telem.id <- thisModule.newDTMI('dtmi', attr.iD, 99);
 			}
 		}else{
-			if(attr.version.oclType().toString() <> 'Void'){
+			if(attr.version.oclType().toString() <> 'Void' and attr.version.oclType().toString() <> 'OclAny'){
 				telem.id <- thisModule.newDTMI('dtmi', attr.name, attr.version);
 			}else{
-				telem.id <- thisModule.newDTMI('dtmi', attr.name, 1);
+				telem.id <- thisModule.newDTMI('dtmi', attr.name, 98);
 			}
 		}
 		
@@ -112,14 +112,14 @@ rule newProperty(attr: CAEX!Attribute){
 		name <- attr.name		
 	)
 	do{
-		if(attr.iD.oclType().toString() <> 'Void'){
-			if(attr.version.oclType().toString() <> 'Void'){
+		if(attr.iD.oclType().toString() <> 'Void' and attr.iD.oclType().toString() <> 'OclAny'){
+			if(attr.version.oclType().toString() <> 'Void' and attr.version.oclType().toString() <> 'OclAny'){
 				prop.id <- thisModule.newDTMI('dtmi', attr.iD, attr.version);
 			}else{
 				prop.id <- thisModule.newDTMI('dtmi', attr.iD, 1);
 			}
 		}else{
-			if(attr.version.oclType().toString() <> 'Void'){
+			if(attr.version.oclType().toString() <> 'Void' and attr.version.oclType().toString() <> 'OclAny'){
 				prop.id <- thisModule.newDTMI('dtmi', attr.name, attr.version);
 			}else{
 				prop.id <- thisModule.newDTMI('dtmi', attr.name, 1);
@@ -180,14 +180,14 @@ unique lazy rule newRelationship{
 		target <- thisModule.newInterface(target.refImmediateComposite())
 	)
 	do{
-		if(source.iD.oclType().toString() <> 'Void'){
-			if(source.version.oclType().toString() <> 'Void'){
+		if(source.iD.oclType().toString() <> 'Void' and source.iD.oclType().toString() <> 'OclAny'){
+			if(source.version.oclType().toString() <> 'Void' and source.version.oclType().toString() <> 'OclAny'){
 				rel.id <- thisModule.newDTMI('dtmi', source.iD, source.version);
 			}else{
 				rel.id <- thisModule.newDTMI('dtmi', source.iD, 1);
 			}
 		}else{
-			if(source.version.oclType().toString() <> 'Void'){
+			if(source.version.oclType().toString() <> 'Void' and source.version.oclType().toString() <> 'OclAny'){
 				rel.id <- thisModule.newDTMI('dtmi', source.name, source.version);
 			}else{
 				rel.id <- thisModule.newDTMI('dtmi', source.name, 1);
@@ -211,14 +211,14 @@ unique lazy rule newComponent{
 		schema <- thisModule.newInterface(ie)
 	)
 	do{
-		if(ie.iD.oclType().toString() <> 'Void'){
-			if(ie.version.oclType().toString() <> 'Void'){
+		if(ie.iD.oclType().toString() <> 'Void' and ie.iD.oclType().toString() <> 'OclAny'){
+			if(ie.version.oclType().toString() <> 'Void' and ie.version.oclType().toString() <> 'OclAny'){
 				comp.id <- thisModule.newDTMI('dtmi', ie.iD, ie.version);
 			}else{
 				comp.id <- thisModule.newDTMI('dtmi', ie.iD, 1);
 			}
 		}else{
-			if(ie.version.oclType().toString() <> 'Void'){
+			if(ie.version.oclType().toString() <> 'Void' and ie.version.oclType().toString() <> 'OclAny'){
 				comp.id <- thisModule.newDTMI('dtmi', ie.name, ie.version);
 			}else{
 				comp.id <- thisModule.newDTMI('dtmi', ie.name, 1);
@@ -230,7 +230,7 @@ unique lazy rule newComponent{
 }
 
 
-rule newDTMI(schema: String, path: String, version: Integer){
+rule newDTMI(schema: String, path: String, version: String){
 	to dtmi: DTDL!DTMI(
 		scheme <- schema,
 		path <- path,
