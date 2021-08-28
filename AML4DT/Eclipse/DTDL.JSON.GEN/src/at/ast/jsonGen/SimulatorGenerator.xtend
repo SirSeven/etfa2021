@@ -213,9 +213,9 @@ class SimulatorGenerator implements IGenerator {
 				}
 				'''
 			//fsa.generateFile('''«input.URI.trimFileExtension.lastSegment».json''', content)
-			fsa.generateFile('''«temp.displayName».json''', content)
-			
+			fsa.generateFile('''schemas/«temp.displayName».json''', content)
 		]
+		
 		// generate twin json files
 		root.instances.filter[o|o instanceof DigitalTwin].forEach[o|
 			val temp = o as DigitalTwin
@@ -225,9 +225,17 @@ class SimulatorGenerator implements IGenerator {
 				}
 				'''
 			//fsa.generateFile('''«input.URI.trimFileExtension.lastSegment».json''', content)
-			fsa.generateFile('''«temp.name».json''', content)
-			
+			fsa.generateFile('''instances/«temp.name».json''', content)
 		]
+		
+		// generate config file
+		val configContent = '''
+			{
+				"IoTHubRessourceId": "«root.iotHubRessourceId»",
+				"AzureDigitalTwinsRessourceId": "«root.azureDigitalTwinsRessourceId»"
+			}
+		'''
+		fsa.generateFile('''azureConfig.json''', configContent)
 	}
 	
 	/*override doGenerate(Resource input, IFileSystemAccess fsa) {

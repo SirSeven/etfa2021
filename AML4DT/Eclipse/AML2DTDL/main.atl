@@ -9,7 +9,9 @@ rule root2root {
 		caex: CAEX!DocumentRoot
 	to
 		dtdl: DTDL!DigitalTwinEnvironment (
-			name <- caex.cAEXFile.fileName.toString()
+			name <- caex.cAEXFile.fileName.toString(),
+			iotHubRessourceId <- 's1',
+			azureDigitalTwinsRessourceId <- 's2'
 		)
 	do{
 		dtdl.types <- Set{};
