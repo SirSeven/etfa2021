@@ -327,10 +327,10 @@
       <version
           value="0"/>
       <systemUnitClass
-          iD="c60d856f-ccd1-4fb9-954f-bb71ab9d9831"
+          iD="Room"
           name="Room">
         <externalInterface
-            iD="7a271462-3a28-4cbb-9e31-6d6e4cee2ee2"
+            iD="Room_AirQualityController"
             name="Room_AirQualityController"
             refBaseClassPath="DTDLInterfaceClassLib/Relationship">
           <attribute
@@ -359,13 +359,14 @@
             partnerSideB="//@cAEXFile/@systemUnitClassLib.0/@systemUnitClass.1/@externalInterface.0"/>
       </systemUnitClass>
       <systemUnitClass
-          iD="93d44518-037b-40ea-a094-ee6586004ccf"
+          iD="AirQualityController"
           name="AirQualityController">
         <externalInterface
-            iD="492fde27-a599-4999-80d0-cc08b8d6b894"
+            iD="AirQualityController_Room"
             name="AirQualityController_Room"
             refBaseClassPath="DTDLInterfaceClassLib/RelationshipEnd"/>
         <systemUnitClass
+            iD="Sensor"
             name="Sensor">
           <attribute
               name="type"
