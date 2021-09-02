@@ -237,14 +237,4 @@ class SimulatorGenerator implements IGenerator {
 		'''
 		fsa.generateFile('''azureConfig.json''', configContent)
 	}
-	
-	/*override doGenerate(Resource input, IFileSystemAccess fsa) {
-		val interface = input.contents.findFirst[o|o instanceof Interface] as Interface
-		val content = '''
-			{
-				«interface.generateJson»
-			}
-			'''
-		fsa.generateFile('''«input.URI.trimFileExtension.lastSegment».json''', content)
-	}*/
 }
