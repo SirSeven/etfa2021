@@ -10,8 +10,8 @@ rule root2root {
 	to
 		dtdl: DTDL!DigitalTwinEnvironment (
 			name <- caex.cAEXFile.fileName.toString(),
-			iotHubRessourceId <- 's1',
-			azureDigitalTwinsRessourceId <- 's2'
+		 	ioTHubResource <- thisModule.newAzureResource('at-davemar-dipl','master-thesis','iotHub'),
+			digitalTwinsResource <- thisModule.newAzureResource('at-davemar-dipl','master-thesis','azureDigitalTwins')
 		)
 	do{
 		dtdl.types <- Set{};
@@ -33,3 +33,13 @@ rule root2root {
 	}
 }
 
+rule newAzureResource(name: String, resourceGroup: String, type: String){
+	to azureResource: DTDL!AzureResource(
+		name <- name,
+		resourceGroup <- resourceGroup,
+		type <- type
+	)
+	do{
+		azureResource;
+	}
+}
