@@ -21,9 +21,7 @@ unique lazy rule newTwin {
 		'type:'.println();
 		dt.type.toString().println();
 		for(attr in ie.attribute) {
-			if(attr.refAttributeType.toString() = 'DTDLAttributeTypeLib/Telemetry'){
-				dt.contents <- dt.contents->including(thisModule.newTelemetryInstance(attr));
-			}else{
+			if(attr.refAttributeType.toString() <> 'DTDLAttributeTypeLib/Telemetry'){
 				dt.contents <- dt.contents->including(thisModule.newPropertyInstance(attr));
 			}
 		}
@@ -68,9 +66,7 @@ rule newComponentInstance(ie: CAEX!InternalElement){
 		'Component to be created:'.println();
 		--comp.name.println();
 		for(attr in ie.attribute) {
-			if(attr.refAttributeType.toString() = 'DTDLAttributeTypeLib/Telemetry'){
-				comp.contents <- comp.contents->including(thisModule.newTelemetryInstance(attr));
-			}else{
+			if(attr.refAttributeType.toString() <> 'DTDLAttributeTypeLib/Telemetry'){
 				comp.contents <- comp.contents->including(thisModule.newPropertyInstance(attr));
 			}
 		}

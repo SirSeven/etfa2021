@@ -82,7 +82,6 @@ class SimulatorGenerator implements IGenerator {
 		'''
 		"@type": "Component",
 		"name": "«comp.name»",
-		«(comp as DTElement).serialize»
 		"schema": "«comp.schema.id.serialize»"
 		'''
 	}
@@ -95,9 +94,6 @@ class SimulatorGenerator implements IGenerator {
 		],
 		"schema": "«tel.schema»",
 		«(tel as DTElement).serialize»
-		«IF tel.unit !== null»
-		"unit": "«tel.unit»",
-		«ENDIF»
 		"name": "«tel.name»"
 		'''
 	}
@@ -110,9 +106,6 @@ class SimulatorGenerator implements IGenerator {
 		],
 		"schema": "«prop.schema»",
 		«(prop as DTElement).serialize»
-		«IF prop.unit !== null»
-		"unit": "«prop.unit»",
-		«ENDIF»
 		"name": "«prop.name»"
 		'''
 	}
