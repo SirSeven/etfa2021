@@ -70,13 +70,13 @@ rule newTelemetry(attr: CAEX!Attribute){
 			if(attr.version.oclType().toString() <> 'Void' and attr.version.oclType().toString() <> 'OclAny'){
 				telem.id <- thisModule.newDTMI('dtmi', attr.iD, attr.version);
 			}else{
-				telem.id <- thisModule.newDTMI('dtmi', attr.iD, 99);
+				telem.id <- thisModule.newDTMI('dtmi', attr.iD, 1);
 			}
 		}else{
 			if(attr.version.oclType().toString() <> 'Void' and attr.version.oclType().toString() <> 'OclAny'){
 				telem.id <- thisModule.newDTMI('dtmi', attr.name, attr.version);
 			}else{
-				telem.id <- thisModule.newDTMI('dtmi', attr.name, 98);
+				telem.id <- thisModule.newDTMI('dtmi', attr.name, 1);
 			}
 		}
 		
@@ -230,7 +230,7 @@ unique lazy rule newComponent{
 }
 
 
-rule newDTMI(schema: String, path: String, version: String){
+rule newDTMI(schema: String, path: String, version: Integer){
 	to dtmi: DTDL!DTMI(
 		scheme <- schema,
 		path <- path,
