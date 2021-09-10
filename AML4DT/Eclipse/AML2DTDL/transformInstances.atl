@@ -33,6 +33,11 @@ unique lazy rule newTwin {
 		for(comp in ie.internalElement){
 			dt.contents <- dt.contents->including(thisModule.newComponentInstance(comp));
 		}
+		
+		if(ie.refBaseSystemUnitPath.toString() = 'SystemUnitClassLib/Room') {
+			dt.deviceInformation <- thisModule.newDeviceInformation();
+		}
+		
 		dt;
 	}
 }
@@ -90,5 +95,17 @@ rule newRelationshipInstance(attr: CAEX!InternalLink){
 			rel.type <- thisModule.getRelationship(source.baseClass.name);
 		}
 		rel;
+	}
+}
+
+rule newDeviceInformation() {
+	to deviceInformation: DTDL!DeviceInformation(
+		ipAddress <- '127.0.0.1',
+		credentials <- 'admin:admin',
+		deployableSourcePath <- '/somefolder/python',
+		deployableTargetPath <- '/usr/bin/run'
+	)
+	do {
+		deviceInformation;
 	}
 }

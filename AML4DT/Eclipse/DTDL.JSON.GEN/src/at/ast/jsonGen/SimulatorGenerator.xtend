@@ -143,26 +143,30 @@ class SimulatorGenerator implements IGenerator {
 	
 	def dispatch generateJson(DigitalTwin dt){
 		'''
-		   "dtid": "«dt.name»",
-		   "content": {
-		   	«FOR cont : dt.contents»
-		   	«IF cont.class != RelationshipInstanceImpl»
-		   		«cont.serialize»,
-		   	«ENDIF»
-		   	«ENDFOR»
-		   	"$metadata": {
-		   		"$model": "«dt.type.id.serialize»"
-		   	 }
-		   }, 
-		   "relationships": [
-		   	«FOR cont : dt.contents»
-		   	«IF cont.class == RelationshipInstanceImpl»
-		   	 {
-		   	 	«cont.serialize»
-		   	 }
-		   	«ENDIF»
-		   	«ENDFOR»
-		   ]
+		"dtid": "«dt.name»",
+		"content": {
+		«FOR cont : dt.contents»
+			«IF cont.class != RelationshipInstanceImpl»
+				«cont.serialize»,
+			«ENDIF»
+		«ENDFOR»
+			"$metadata": {
+				"$model": "«dt.type.id.serialize»"
+			}
+		}, 
+		"relationships": [
+		«FOR cont : dt.contents»
+			«IF cont.class == RelationshipInstanceImpl»
+				{
+				«cont.serialize»
+				}
+			«ENDIF»
+		«ENDFOR»
+		]
+		«IF dt.deviceInformation !== null »
+			,
+			"device": «dt.deviceInformation.serialize»
+		«ENDIF»
 		'''
 	}
 	
@@ -201,6 +205,16 @@ class SimulatorGenerator implements IGenerator {
 		}'''
 	}
 	
+	def dispatch serialize(DeviceInformation deviceInformation) {
+		'''
+		{
+			"ipAddress": "«deviceInformation.ipAddress»",
+			"credentials": "«deviceInformation.credentials»",
+			"deployableSourcePath": "«deviceInformation.deployableSourcePath»",
+			"deployableTargetPath": "«deviceInformation.deployableTargetPath»"
+		}'''
+	}
+	
 	override doGenerate(Resource input, IFileSystemAccess fsa) {
 		val root = input.contents.findFirst[o|o instanceof DigitalTwinEnvironment] as DigitalTwinEnvironment
 		// generate model json files
@@ -225,8 +239,7 @@ class SimulatorGenerator implements IGenerator {
 				'''
 			//fsa.generateFile('''«input.URI.trimFileExtension.lastSegment».json''', content)
 			fsa.generateFile('''instances/«temp.name».json''', content)
-		]
-		
+		]		
 				
 		// generate config file
 		val configContent = '''
