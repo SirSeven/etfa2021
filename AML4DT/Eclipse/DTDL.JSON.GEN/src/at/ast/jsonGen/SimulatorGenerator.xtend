@@ -76,8 +76,6 @@ class SimulatorGenerator implements IGenerator {
 		'''
 	}
 	
-	
-	
 	def dispatch generateJson(Component comp){
 		'''
 		"@type": "Component",
@@ -153,7 +151,7 @@ class SimulatorGenerator implements IGenerator {
 		   	«ENDIF»
 		   	«ENDFOR»
 		   	"$metadata": {
-		   		"$model": "«dt.type.id»"
+		   		"$model": "«dt.type.id.serialize»"
 		   	 }
 		   }, 
 		   "relationships": [
@@ -203,14 +201,6 @@ class SimulatorGenerator implements IGenerator {
 		}'''
 	}
 	
-	def dispatch serializeConfiguration(DigitalTwin digitalTwin) {
-		'''
-		{
-			"instanceName": "«digitalTwin.name»",
-			"instanceType": "«(digitalTwin.type as DTElement).id.serialize»"
-		}'''
-	}
-	
 	override doGenerate(Resource input, IFileSystemAccess fsa) {
 		val root = input.contents.findFirst[o|o instanceof DigitalTwinEnvironment] as DigitalTwinEnvironment
 		// generate model json files
@@ -242,14 +232,7 @@ class SimulatorGenerator implements IGenerator {
 		val configContent = '''
 			{
 				"ioTHubResource": «root.ioTHubResource.serialize»,
-				"azureDigitalTwinsResource": «root.digitalTwinsResource.serialize»,
-				"instances": [
-					«FOR i : 0..<root.instances.size»
-					«var digitalTwin = root.instances.get(i)»
-					«digitalTwin.serializeConfiguration»
-					«if(i < root.instances.size - 1) ''','''»
-					«ENDFOR»
-				] 
+				"azureDigitalTwinsResource": «root.digitalTwinsResource.serialize»
 			}
 		'''
 		fsa.generateFile('''azureConfig.json''', configContent)
