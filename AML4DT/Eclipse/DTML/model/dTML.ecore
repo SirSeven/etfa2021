@@ -140,6 +140,8 @@
         eType="#//DTContent" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//Interface"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Device" eSuperTypes="#//DigitalTwin">
     <eStructuralFeatures xsi:type="ecore:EReference" name="deviceInformation" eType="#//DeviceInformation"
         containment="true"/>
   </eClassifiers>

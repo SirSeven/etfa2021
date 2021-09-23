@@ -163,9 +163,9 @@ class SimulatorGenerator implements IGenerator {
 			«ENDIF»
 		«ENDFOR»
 		]
-		«IF dt.deviceInformation !== null »
+		«IF dt instanceof Device»
 			,
-			"device": «dt.deviceInformation.serialize»
+			"device": «(dt as Device).deviceInformation.serialize»
 		«ENDIF»
 		'''
 	}

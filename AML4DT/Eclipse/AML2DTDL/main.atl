@@ -26,8 +26,12 @@ rule root2root {
 		
 		dtdl.instances <- Set{};
 		for(instancehier in caex.cAEXFile.instanceHierarchy){
-			for(ie in instancehier.internalElement){
-				dtdl.instances <- dtdl.instances->including(thisModule.newTwin(ie));
+			for(ie in instancehier.internalElement) {
+				if(ie.refBaseSystemUnitPath.toString() = 'SystemUnitClassLib/AirQualityController') {
+					dtdl.instances <- dtdl.instances->including(thisModule.newTwinDevice(ie));
+				} else {
+					dtdl.instances <- dtdl.instances->including(thisModule.newTwin(ie));
+				}
 			}
 		}
 	}

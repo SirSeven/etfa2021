@@ -34,8 +34,36 @@ unique lazy rule newTwin {
 			dt.contents <- dt.contents->including(thisModule.newComponentInstance(comp));
 		}
 		
-		if(ie.refBaseSystemUnitPath.toString() = 'SystemUnitClassLib/Room') {
-			dt.deviceInformation <- thisModule.newDeviceInformation();
+		dt;
+	}
+}
+
+unique lazy rule newTwinDevice {
+	from ie: CAEX!InternalElement
+	to
+		dt: DTDL!Device (
+			name <- ie.name,
+			type <- thisModule.newInterface(ie.baseSystemUnit),
+			deviceInformation <- thisModule.newDeviceInformation()
+		)
+	do{
+		dt.contents <- Set{};
+		'Twin to be created:'.println();
+		dt.name.println();
+		'type:'.println();
+		dt.type.toString().println();
+		for(attr in ie.attribute) {
+			if(attr.refAttributeType.toString() <> 'DTDLAttributeTypeLib/Telemetry'){
+				dt.contents <- dt.contents->including(thisModule.newPropertyInstance(attr));
+			}
+		}
+		
+		for(rel in ie.internalLink){
+				dt.contents <- dt.contents->including(thisModule.newRelationshipInstance(rel));
+		}
+		
+		for(comp in ie.internalElement){
+			dt.contents <- dt.contents->including(thisModule.newComponentInstance(comp));
 		}
 		
 		dt;
