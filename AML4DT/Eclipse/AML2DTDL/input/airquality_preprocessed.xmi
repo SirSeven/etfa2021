@@ -43,6 +43,15 @@
           name="Raspi123"
           refBaseSystemUnitPath="SystemUnitClassLib/AirQualityController"
           baseSystemUnit="//@cAEXFile/@systemUnitClassLib.0/@systemUnitClass.1">
+        <additionalInformation
+            name="script_to_run"
+            value="deploy.sh"/>
+        <additionalInformation
+            name="source_folder"
+            value="D:\Masterarbeit\DigitalTwin_Airquality_For_Covid_Risk_Assessment\physical_twin\hardware_setup"/>
+        <additionalInformation
+            name="twin_configuration"
+            value="{'Sensors':[{'Name':'Sensor1','Type':'dht11','Port':'xy','Properties':[{'Name':'co2Value','Path':'co2'},{'Name':'temp','Path':'temperature'},{'Name':'humidity','Path':'humidity'}]}]}"/>
         <externalInterface
             iD="2c865415-6a93-4c93-ac81-18ab710e29e0"
             name="Raspi123_room"

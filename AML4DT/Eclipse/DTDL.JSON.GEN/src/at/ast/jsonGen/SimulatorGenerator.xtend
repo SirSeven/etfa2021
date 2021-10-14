@@ -6,6 +6,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import DTML.*
 import java.util.List
 import DTML.impl.RelationshipInstanceImpl
+import DTML.impl.StringInstanceImpl
 
 class SimulatorGenerator implements IGenerator {
 	// Helper functions
@@ -163,10 +164,6 @@ class SimulatorGenerator implements IGenerator {
 			«ENDIF»
 		«ENDFOR»
 		]
-		«IF dt instanceof Device»
-			,
-			"device": «(dt as Device).deviceInformation.serialize»
-		«ENDIF»
 		'''
 	}
 	
@@ -205,14 +202,8 @@ class SimulatorGenerator implements IGenerator {
 		}'''
 	}
 	
-	def dispatch serialize(DeviceInformation deviceInformation) {
-		'''
-		{
-			"ipAddress": "«deviceInformation.ipAddress»",
-			"credentials": "«deviceInformation.credentials»",
-			"deployableSourcePath": "«deviceInformation.deployableSourcePath»",
-			"deployableTargetPath": "«deviceInformation.deployableTargetPath»"
-		}'''
+	def dispatch serialize(StringInstance stringInstance) {
+		stringInstance.value;
 	}
 	
 	override doGenerate(Resource input, IFileSystemAccess fsa) {
@@ -239,7 +230,27 @@ class SimulatorGenerator implements IGenerator {
 				'''
 			//fsa.generateFile('''«input.URI.trimFileExtension.lastSegment».json''', content)
 			fsa.generateFile('''instances/«temp.name».json''', content)
-		]		
+		]
+		
+		// generate twin device-configuration json files
+		root.instances.filter[o|o instanceof DigitalTwin].forEach[o|
+			val twin = o as DigitalTwin
+			if(twin.configurationProperties.size > 0) {
+				val content = '''
+				{
+					«FOR i : 0..<twin.configurationProperties.size»
+						«var configProp = twin.configurationProperties.get(i)»
+						«IF configProp.value instanceof StringInstance»
+							"«configProp.name»":"«(configProp.value as StringInstance).value»"«IF(i < twin.configurationProperties.size - 1)»,«ENDIF»
+						«ELSEIF configProp.value instanceof IntInstance»
+							"«configProp.name»":"«(configProp.value as IntInstance).value»"«IF(i < twin.configurationProperties.size - 1)»,«ENDIF»
+						«ENDIF»
+					«ENDFOR»
+				}
+				'''
+				fsa.generateFile('''instance-configs/«twin.name».config.json''', content)
+			}
+		]
 				
 		// generate config file
 		val configContent = '''

@@ -34,39 +34,30 @@ unique lazy rule newTwin {
 			dt.contents <- dt.contents->including(thisModule.newComponentInstance(comp));
 		}
 		
+		for(additionalInfo in ie.additionalInformation) {
+			dt.configurationProperties <- dt.configurationProperties->including(thisModule.newConfigurationProperty(additionalInfo));
+		}
+		
 		dt;
 	}
 }
 
-unique lazy rule newTwinDevice {
-	from ie: CAEX!InternalElement
-	to
-		dt: DTDL!Device (
-			name <- ie.name,
-			type <- thisModule.newInterface(ie.baseSystemUnit),
-			deviceInformation <- thisModule.newDeviceInformation()
-		)
-	do{
-		dt.contents <- Set{};
-		'Twin to be created:'.println();
-		dt.name.println();
-		'type:'.println();
-		dt.type.toString().println();
-		for(attr in ie.attribute) {
-			if(attr.refAttributeType.toString() <> 'DTDLAttributeTypeLib/Telemetry'){
-				dt.contents <- dt.contents->including(thisModule.newPropertyInstance(attr));
-			}
-		}
-		
-		for(rel in ie.internalLink){
-				dt.contents <- dt.contents->including(thisModule.newRelationshipInstance(rel));
-		}
-		
-		for(comp in ie.internalElement){
-			dt.contents <- dt.contents->including(thisModule.newComponentInstance(comp));
-		}
-		
-		dt;
+rule newConfigurationProperty(additionalInfo: CAEX!AdditionalInformation) {
+	to configProp: DTDL!ConfigurationPropertyInstance(
+		name <- additionalInfo.name,
+		value <- thisModule.newStringDataPoint(additionalInfo)
+	)
+	do {
+		configProp;
+	}
+}
+
+rule newStringDataPoint(additionalInfo: CAEX!AdditionalInformation) {
+	to dataPoint: DTDL!StringInstance(
+		value <- additionalInfo.value
+	)
+	do {
+		dataPoint;
 	}
 }
 
@@ -123,17 +114,5 @@ rule newRelationshipInstance(attr: CAEX!InternalLink){
 			rel.type <- thisModule.getRelationship(source.baseClass.name);
 		}
 		rel;
-	}
-}
-
-rule newDeviceInformation() {
-	to deviceInformation: DTDL!DeviceInformation(
-		ipAddress <- '127.0.0.1',
-		credentials <- 'admin:admin',
-		deployableSourcePath <- '/somefolder/python',
-		deployableTargetPath <- '/usr/bin/run'
-	)
-	do {
-		deviceInformation;
 	}
 }
