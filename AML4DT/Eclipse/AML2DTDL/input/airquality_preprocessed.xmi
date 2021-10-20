@@ -45,13 +45,10 @@
           baseSystemUnit="//@cAEXFile/@systemUnitClassLib.0/@systemUnitClass.1">
         <additionalInformation
             name="script_to_run"
-            value="deploy.sh"/>
-        <additionalInformation
-            name="source_folder"
-            value="D:\Masterarbeit\DigitalTwin_Airquality_For_Covid_Risk_Assessment\physical_twin\hardware_setup"/>
+            value="python D:\Masterarbeit\digital-twins-automation\copy-deploy.py ignoredIP ignoredUser ignoredPwd D:\Masterarbeit\DigitalTwin_Airquality_For_Covid_Risk_Assessment\physical_twin\simulated_hardware"/>
         <additionalInformation
             name="twin_configuration"
-            value="{'Sensors':[{'Name':'Sensor1','Type':'dht11','Port':'xy','Properties':[{'Name':'co2Value','Path':'co2'},{'Name':'temp','Path':'temperature'},{'Name':'humidity','Path':'humidity'}]}]}"/>
+            value="{&quot;id&quot;:&quot;Raspi123&quot;,&quot;sensors&quot;:[{&quot;Class&quot;:&quot;CsvValuesSensor&quot;,&quot;Module&quot;:&quot;sensors.CsvValuesSensor&quot;,&quot;Properties&quot;:{&quot;Name&quot;:&quot;Sensor1&quot;,&quot;Type&quot;:&quot;dht11&quot;,&quot;Port&quot;:&quot;xy&quot;,&quot;CsvFilePath&quot;:&quot;D:\\Masterarbeit\\DigitalTwin_Airquality_For_Covid_Risk_Assessment\\physical_twin\\simulated_hardware\\sensorData.csv&quot;},&quot;Values&quot;:[{&quot;Name&quot;:&quot;co2Value&quot;,&quot;Path&quot;:&quot;co2&quot;}]}]}"/>
         <externalInterface
             iD="2c865415-6a93-4c93-ac81-18ab710e29e0"
             name="Raspi123_room"
@@ -192,6 +189,12 @@
           name="Arduino321"
           refBaseSystemUnitPath="SystemUnitClassLib/AirQualityController"
           baseSystemUnit="//@cAEXFile/@systemUnitClassLib.0/@systemUnitClass.1">
+        <additionalInformation
+            name="script_to_run"
+            value="python D:\Masterarbeit\digital-twins-automation\copy-deploy.py 9.9.9.9 cred ential D:\Masterarbeit\DigitalTwin_Airquality_For_Covid_Risk_Assessment\physical_twin\simulated_hardware"/>
+        <additionalInformation
+            name="twin_configuration"
+            value="{&quot;id&quot;:&quot;Arduino321&quot;,&quot;sensors&quot;:[{&quot;Class&quot;:&quot;CsvValuesSensor&quot;,&quot;Module&quot;:&quot;sensors.CsvValuesSensor&quot;,&quot;Properties&quot;:{&quot;Name&quot;:&quot;Sensor2&quot;,&quot;Type&quot;:&quot;dht11&quot;,&quot;Port&quot;:&quot;xy&quot;,&quot;CsvFilePath&quot;:&quot;D:\\Masterarbeit\\DigitalTwin_Airquality_For_Covid_Risk_Assessment\\physical_twin\\simulated_hardware\\sensorData.csv&quot;},&quot;Values&quot;:[{&quot;Name&quot;:&quot;co2Value&quot;,&quot;Path&quot;:&quot;co2&quot;},{&quot;Name&quot;:&quot;temp&quot;,&quot;Path&quot;:&quot;temperature&quot;},{&quot;Name&quot;:&quot;hum&quot;,&quot;Path&quot;:&quot;humidity&quot;}]}]}"/>
         <externalInterface
             iD="59363151-4ea1-47d0-a015-833191369894"
             name="Arduino321_Room"
