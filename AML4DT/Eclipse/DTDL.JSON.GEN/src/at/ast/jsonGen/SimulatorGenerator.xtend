@@ -5,6 +5,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import DTML.*
 import DTML.impl.RelationshipInstanceImpl
+import DTML.impl.StringInstanceImpl
 
 class SimulatorGenerator implements IGenerator {
 	// Helper functions
@@ -154,12 +155,14 @@ class SimulatorGenerator implements IGenerator {
 			}
 		}, 
 		"relationships": [
-		«FOR cont : dt.contents»
+		«FOR i : 0..<dt.contents.size»
+		«var cont = dt.contents.get(i)»
 			«IF cont.class == RelationshipInstanceImpl»
 				{
 				«cont.serialize»
-				}
+				}«if(i < dt.contents.size - 1) ''','''»
 			«ENDIF»
+			
 		«ENDFOR»
 		]
 		'''
@@ -176,7 +179,15 @@ class SimulatorGenerator implements IGenerator {
 	}
 	
 	def dispatch serialize(PropertyInstance propInst){
-		'''"«propInst.name»": "«propInst.value»"'''
+		'''"«propInst.name»": «propInst.value.serialize()»'''
+	}
+	
+	def dispatch serialize(StringInstanceImpl stringInstance) {
+		'''"«stringInstance.value»"'''
+	}
+	
+	def dispatch serialize(DataPoint dp) {
+		'''"«dp.toString()»"'''
 	}
 	
 	def dispatch serialize(ComponentInstance compInst){
