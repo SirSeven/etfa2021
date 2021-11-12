@@ -45,19 +45,10 @@ unique lazy rule newTwin {
 rule newConfigurationProperty(additionalInfo: CAEX!AdditionalInformation) {
 	to configProp: DTDL!ConfigurationPropertyInstance(
 		name <- additionalInfo.name,
-		value <- thisModule.newStringDataPoint(additionalInfo)
+		value <- thisModule.newStringDataPoint(additionalInfo.value)
 	)
 	do {
 		configProp;
-	}
-}
-
-rule newStringDataPoint(additionalInfo: CAEX!AdditionalInformation) {
-	to dataPoint: DTDL!StringInstance(
-		value <- additionalInfo.value
-	)
-	do {
-		dataPoint;
 	}
 }
 
@@ -72,10 +63,20 @@ rule newTelemetryInstance(attr: CAEX!Attribute){
 
 rule newPropertyInstance(attr: CAEX!Attribute){
 	to prop: DTDL!PropertyInstance(
-		name <- attr.name
+		name <- attr.name,
+		value <- thisModule.newStringDataPoint(attr.value)
 	)
-	do{
+	do{		
 		prop;
+	}
+}
+
+rule newStringDataPoint(stringValue: String) {
+	to dataPoint: DTDL!StringInstance(
+		value <- stringValue
+	)
+	do {
+		dataPoint;
 	}
 }
 
