@@ -37,6 +37,14 @@
       <genEnumLiterals ecoreEnumLiteral="dTML.ecore#//Unit/degreeFahrenheit"/>
       <genEnumLiterals ecoreEnumLiteral="dTML.ecore#//Unit/NONE"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="dTML.ecore#//ConditionOperationType">
+      <genEnumLiterals ecoreEnumLiteral="dTML.ecore#//ConditionOperationType/GreaterThan"/>
+      <genEnumLiterals ecoreEnumLiteral="dTML.ecore#//ConditionOperationType/LowerThan"/>
+      <genEnumLiterals ecoreEnumLiteral="dTML.ecore#//ConditionOperationType/GreaterOrEqualThan"/>
+      <genEnumLiterals ecoreEnumLiteral="dTML.ecore#//ConditionOperationType/LowerOrEqualThan"/>
+      <genEnumLiterals ecoreEnumLiteral="dTML.ecore#//ConditionOperationType/Equal"/>
+      <genEnumLiterals ecoreEnumLiteral="dTML.ecore#//ConditionOperationType/NotEqual"/>
+    </genEnums>
     <genClasses ecoreClass="dTML.ecore#//InterfaceContent"/>
     <genClasses ecoreClass="dTML.ecore#//Interface">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//Interface/contents"/>
@@ -126,6 +134,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//DigitalTwin/contents"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dTML.ecore#//DigitalTwin/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dTML.ecore#//DigitalTwin/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//DigitalTwin/configurationProperties"/>
     </genClasses>
     <genClasses ecoreClass="dTML.ecore#//ComponentInstance">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//ComponentInstance/schema"/>
@@ -189,6 +198,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dTML.ecore#//DigitalTwinEnvironment/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//DigitalTwinEnvironment/instances"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//DigitalTwinEnvironment/types"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//DigitalTwinEnvironment/ioTHubResource"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//DigitalTwinEnvironment/digitalTwinsResource"/>
     </genClasses>
     <genClasses ecoreClass="dTML.ecore#//StringInstance">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dTML.ecore#//StringInstance/value"/>
@@ -197,5 +208,25 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dTML.ecore#//IntInstance/value"/>
     </genClasses>
     <genClasses ecoreClass="dTML.ecore#//ComponentContent"/>
+    <genClasses ecoreClass="dTML.ecore#//AzureResource">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dTML.ecore#//AzureResource/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dTML.ecore#//AzureResource/resourceGroup"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dTML.ecore#//AzureResource/type"/>
+    </genClasses>
+    <genClasses ecoreClass="dTML.ecore#//ConfigurationPropertyInstance">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//ConfigurationPropertyInstance/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dTML.ecore#//ConfigurationPropertyInstance/name"/>
+    </genClasses>
+    <genClasses ecoreClass="dTML.ecore#//Condition"/>
+    <genClasses ecoreClass="dTML.ecore#//UnaryCondition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dTML.ecore#//UnaryCondition/operation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//UnaryCondition/value"/>
+    </genClasses>
+    <genClasses ecoreClass="dTML.ecore#//TelemetryUnaryCondition">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dTML.ecore#//TelemetryUnaryCondition/telemetry"/>
+    </genClasses>
+    <genClasses ecoreClass="dTML.ecore#//PropertyUnaryCondition">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dTML.ecore#//PropertyUnaryCondition/property"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>
