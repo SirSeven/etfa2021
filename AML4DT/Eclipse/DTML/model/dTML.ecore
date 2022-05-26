@@ -239,8 +239,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Condition" eSuperTypes="#//InterfaceContent #//DTContent"/>
-  <eClassifiers xsi:type="ecore:EClass" name="UnaryCondition" eSuperTypes="#//Condition">
+  <eClassifiers xsi:type="ecore:EClass" name="Condition" abstract="true" eSuperTypes="#//InterfaceContent #//DTContent"/>
+  <eClassifiers xsi:type="ecore:EClass" name="UnaryCondition" abstract="true" eSuperTypes="#//Condition">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operation" eType="#//ConditionOperationType"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//DataPoint"
         containment="true"/>

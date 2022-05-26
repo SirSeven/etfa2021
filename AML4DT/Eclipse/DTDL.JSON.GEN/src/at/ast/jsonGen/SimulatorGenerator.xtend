@@ -6,6 +6,9 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import DTML.*
 import DTML.impl.RelationshipInstanceImpl
 import DTML.impl.StringInstanceImpl
+import DTML.impl.TelemetryUnaryConditionImpl
+import DTML.impl.PropertyUnaryConditionImpl
+import DTML.impl.IntInstanceImpl
 
 class SimulatorGenerator implements IGenerator {
 	// Helper functions
@@ -38,11 +41,12 @@ class SimulatorGenerator implements IGenerator {
 		   «(interf as DTElement).serialize»
 		   «IF interf.contents.size > 0»
 		   "contents":[
-		   «FOR i : 0..<interf.contents.size»
-		   «var cont = interf.contents.get(i)»
+   		   «var contents = interf.contents.filter[c|!(c instanceof Condition)]»
+		   «FOR i : 0..<contents.size»
+		   «var cont = contents.get(i)»
 		   		{
 		   		«cont.generateJson»
-		   		}«if(i < interf.contents.size - 1) ''','''»
+		   		}«if(i < contents.size - 1) ''','''»
 		   «ENDFOR»
 		   ],
 		   «ENDIF»
@@ -181,15 +185,7 @@ class SimulatorGenerator implements IGenerator {
 	def dispatch serialize(PropertyInstance propInst){
 		'''"«propInst.name»": «propInst.value.serialize()»'''
 	}
-	
-	def dispatch serialize(StringInstanceImpl stringInstance) {
-		'''"«stringInstance.value»"'''
-	}
-	
-	def dispatch serialize(DataPoint dp) {
-		'''"«dp.toString()»"'''
-	}
-	
+		
 	def dispatch serialize(ComponentInstance compInst){
 		'''
 		   "«compInst.type.name»": {
@@ -211,8 +207,34 @@ class SimulatorGenerator implements IGenerator {
 		}'''
 	}
 	
-	def dispatch serialize(StringInstance stringInstance) {
-		stringInstance.value;
+	def dispatch generateJsonPathCondition(Condition condition) {
+		if(condition.class == UnaryCondition) {
+			(condition as UnaryCondition).serialize()
+		}
+	}
+	
+	def dispatch generateJsonPathCondition(UnaryCondition condition) {
+		if(condition.class == TelemetryUnaryCondition) {
+			(condition as TelemetryUnaryCondition).serialize()
+		} else if(condition.class == PropertyUnaryCondition) {
+			(condition as PropertyUnaryCondition).serialize()
+		}
+	}
+		
+	def dispatch serialize(StringInstanceImpl stringInstance) {
+		''''«stringInstance.value»' '''
+	}
+	
+	def dispatch serialize(IntInstanceImpl intInstance) {
+		'''«intInstance.value»'''
+	}
+	
+	def dispatch generateJsonPathCondition(TelemetryUnaryConditionImpl condition) {
+		'''"$.«condition.telemetry.displayName»[?(@.value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
+	}
+	
+	def dispatch generateJsonPathCondition(PropertyUnaryConditionImpl condition) {
+		'''"$.«condition.property.displayName»[?(@.value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
 	}
 	
 	override doGenerate(Resource input, IFileSystemAccess fsa) {
@@ -250,7 +272,7 @@ class SimulatorGenerator implements IGenerator {
 					«FOR i : 0..<twin.configurationProperties.size»
 						«var configProp = twin.configurationProperties.get(i)»
 						«IF configProp.value instanceof StringInstance»
-							"«configProp.name»":"«SimulatorGeneratorJsonHelper.escapeJson((configProp.value as StringInstance).value)»"«IF(i < twin.configurationProperties.size - 1)»,«ENDIF»
+							"«configProp.name»":"«SimulatorGeneratorHelper.escapeJson((configProp.value as StringInstance).value)»"«IF(i < twin.configurationProperties.size - 1)»,«ENDIF»
 						«ELSEIF configProp.value instanceof IntInstance»
 							"«configProp.name»":"«(configProp.value as IntInstance).value»"«IF(i < twin.configurationProperties.size - 1)»,«ENDIF»
 						«ENDIF»
@@ -269,5 +291,21 @@ class SimulatorGenerator implements IGenerator {
 			}
 		'''
 		fsa.generateFile('''azureConfig.json''', configContent)
+		
+		// generate validation rule json paths
+		root.types.filter[o|o instanceof Interface].forEach[interface|
+			val typeConditions = interface.contents.filter[content|content instanceof Condition]
+			if(typeConditions.size > 0) {
+				val validationsContent = '''
+				[
+					«FOR i : 0..<typeConditions.size»
+						«var condition = typeConditions.get(i) as Condition»
+						«condition.generateJsonPathCondition»«IF(i < typeConditions.size - 1)»,«ENDIF»
+					«ENDFOR»
+				]
+				'''
+				fsa.generateFile('''validators/«interface.displayName».validators.json''', validationsContent)				
+			}			
+		]
 	}
 }
