@@ -200,6 +200,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//DigitalTwinEnvironment/types"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//DigitalTwinEnvironment/ioTHubResource"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//DigitalTwinEnvironment/digitalTwinsResource"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//DigitalTwinEnvironment/appConfigurationResource"/>
     </genClasses>
     <genClasses ecoreClass="dTML.ecore#//StringInstance">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dTML.ecore#//StringInstance/value"/>

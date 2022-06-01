@@ -201,7 +201,7 @@ class SimulatorGenerator implements IGenerator {
 	
 	def dispatch serialize(AzureResource azureResource) {
 		'''
-		{
+		"«azureResource.type»": {
 			"name": "«azureResource.name»",
 			"resourceGroup": "«azureResource.resourceGroup»"
 		}'''
@@ -286,26 +286,34 @@ class SimulatorGenerator implements IGenerator {
 		// generate config file
 		val configContent = '''
 			{
-				"ioTHubResource": «root.ioTHubResource.serialize»,
-				"azureDigitalTwinsResource": «root.digitalTwinsResource.serialize»
+				«root.ioTHubResource.serialize»,
+				«root.digitalTwinsResource.serialize»,
+				«root.appConfigurationResource.serialize»
 			}
 		'''
 		fsa.generateFile('''azureConfig.json''', configContent)
 		
 		// generate validation rule json paths
-		root.types.filter[o|o instanceof Interface].forEach[interface|
-			val typeConditions = interface.contents.filter[content|content instanceof Condition]
-			if(typeConditions.size > 0) {
-				val validationsContent = '''
-				[
-					«FOR i : 0..<typeConditions.size»
-						«var condition = typeConditions.get(i) as Condition»
-						«condition.generateJsonPathCondition»«IF(i < typeConditions.size - 1)»,«ENDIF»
+		val interfaces = root.types.filter[o|o instanceof Interface]
+		var firstWritten = false
+		val validationsContent = '''
+		{
+			"Validators": {
+			«FOR i : 0..<interfaces.size»
+				«val interface  = interfaces.get(i)»
+				«val typeConditions = interface.contents.filter[content|content instanceof Condition]»
+				«IF typeConditions.size > 0»
+					«IF firstWritten»,«ENDIF»"«interface.displayName»": [
+					«FOR j : 0..<typeConditions.size»
+					«var condition = typeConditions.get(j) as Condition»
+						«condition.generateJsonPathCondition»«IF(j < typeConditions.size - 1)»,«ENDIF»
 					«ENDFOR»
-				]
-				'''
-				fsa.generateFile('''validators/«interface.displayName».validators.json''', validationsContent)				
-			}			
-		]
+					]«{firstWritten = true; ""}»
+				«ENDIF»
+			«ENDFOR»
+			}
+		}
+		'''
+		fsa.generateFile('''validators.json''', validationsContent)
 	}
 }

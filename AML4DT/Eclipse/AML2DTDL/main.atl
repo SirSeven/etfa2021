@@ -11,7 +11,8 @@ rule root2root {
 		dtdl: DTDL!DigitalTwinEnvironment (
 			name <- caex.cAEXFile.fileName.toString(),
 		 	ioTHubResource <- thisModule.newAzureResource('at-davemar-dipl','master-thesis','iotHub'),
-			digitalTwinsResource <- thisModule.newAzureResource('at-davemar-dipl','master-thesis','azureDigitalTwins')
+			digitalTwinsResource <- thisModule.newAzureResource('at-davemar-dipl','master-thesis','azureDigitalTwins'),
+			appConfigurationResource <- thisModule.newAzureResource('at-davemar-dipl','master-thesis','appConfiguration')
 		)
 	do{
 		dtdl.types <- Set{};
