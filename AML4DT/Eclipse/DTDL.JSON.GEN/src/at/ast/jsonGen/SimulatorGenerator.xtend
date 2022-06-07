@@ -230,11 +230,11 @@ class SimulatorGenerator implements IGenerator {
 	}
 	
 	def dispatch generateJsonPathCondition(TelemetryUnaryConditionImpl condition) {
-		'''"$.«condition.telemetry.displayName»[?(@.value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
+		'''"$.[?(@.property=='«condition.telemetry.displayName»'&&@.value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
 	}
 	
 	def dispatch generateJsonPathCondition(PropertyUnaryConditionImpl condition) {
-		'''"$.«condition.property.displayName»[?(@.value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
+		'''"$.[?(@.property=='«condition.property.displayName»'&&@.value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
 	}
 	
 	override doGenerate(Resource input, IFileSystemAccess fsa) {
