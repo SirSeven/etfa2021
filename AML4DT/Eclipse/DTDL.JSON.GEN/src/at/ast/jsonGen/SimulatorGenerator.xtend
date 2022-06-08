@@ -9,6 +9,7 @@ import DTML.impl.StringInstanceImpl
 import DTML.impl.TelemetryUnaryConditionImpl
 import DTML.impl.PropertyUnaryConditionImpl
 import DTML.impl.IntInstanceImpl
+import DTML.impl.LogActionImpl
 
 class SimulatorGenerator implements IGenerator {
 	// Helper functions
@@ -230,11 +231,21 @@ class SimulatorGenerator implements IGenerator {
 	}
 	
 	def dispatch generateJsonPathCondition(TelemetryUnaryConditionImpl condition) {
-		'''"$.[?(@.property=='«condition.telemetry.displayName»'&&@.value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
+		'''"$.[?(@.Property=='«condition.telemetry.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
 	}
 	
 	def dispatch generateJsonPathCondition(PropertyUnaryConditionImpl condition) {
-		'''"$.[?(@.property=='«condition.property.displayName»'&&@.value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
+		'''"$.[?(@.Property=='«condition.property.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
+	}
+	
+	def dispatch serialize(LogAction action) {
+		'''{
+			"type":"«action.class.simpleName»",
+			"config": {
+				"logLevel": "«action.logLevel»",
+				"message": "«action.message»"
+			}
+		}'''
 	}
 	
 	override doGenerate(Resource input, IFileSystemAccess fsa) {
@@ -306,7 +317,15 @@ class SimulatorGenerator implements IGenerator {
 					«IF firstWritten»,«ENDIF»"«interface.displayName»": [
 					«FOR j : 0..<typeConditions.size»
 					«var condition = typeConditions.get(j) as Condition»
-						«condition.generateJsonPathCondition»«IF(j < typeConditions.size - 1)»,«ENDIF»
+						{
+							"jsonPathQuery": «condition.generateJsonPathCondition»,
+							"continue": «condition.continue»,
+							"actions": [
+								«FOR k : 0..<condition.actions.size»
+								«condition.actions.get(k).serialize»«IF(k < condition.actions.size - 1)»,«ENDIF»
+								«ENDFOR»
+							]
+						}«IF(j < typeConditions.size - 1)»,«ENDIF»
 					«ENDFOR»
 					]«{firstWritten = true; ""}»
 				«ENDIF»

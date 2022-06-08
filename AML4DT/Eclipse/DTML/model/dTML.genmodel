@@ -218,7 +218,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//ConfigurationPropertyInstance/value"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dTML.ecore#//ConfigurationPropertyInstance/name"/>
     </genClasses>
-    <genClasses ecoreClass="dTML.ecore#//Condition"/>
+    <genClasses ecoreClass="dTML.ecore#//Condition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//Condition/Actions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dTML.ecore#//Condition/Continue"/>
+    </genClasses>
     <genClasses ecoreClass="dTML.ecore#//UnaryCondition">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dTML.ecore#//UnaryCondition/operation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dTML.ecore#//UnaryCondition/value"/>
@@ -228,6 +231,11 @@
     </genClasses>
     <genClasses ecoreClass="dTML.ecore#//PropertyUnaryCondition">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dTML.ecore#//PropertyUnaryCondition/property"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="dTML.ecore#//ConditionAction"/>
+    <genClasses ecoreClass="dTML.ecore#//LogAction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dTML.ecore#//LogAction/LogLevel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dTML.ecore#//LogAction/Message"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
