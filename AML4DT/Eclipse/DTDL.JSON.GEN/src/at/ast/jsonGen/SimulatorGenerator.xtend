@@ -184,19 +184,19 @@ class SimulatorGenerator implements IGenerator {
 	}
 	
 	def dispatch serialize(PropertyInstance propInst){
-		'''"«propInst.name»": «propInst.value.serialize()»'''
+		'''"«propInst.name»": «propInst.value.serialize»'''
 	}
 		
 	def dispatch serialize(ComponentInstance compInst){
-		'''
-		   "«compInst.type.name»": {
-		   	"$metadata": {},
-		   	«FOR i : 0..<compInst.contents.size»
-				«var cont = compInst.contents.get(i)»
-				«cont.serialize»
-				«if(i < compInst.contents.size - 1) ''','''»
-			«ENDFOR»
-		   }
+		'''	
+			"«compInst.type.name»": {
+	   			"$metadata": {},
+   				«FOR i : 0..<compInst.contents.size»
+					«var cont = compInst.contents.get(i)»
+					«cont.serialize»
+					«if(i < compInst.contents.size - 1) ''','''»
+				«ENDFOR»
+		   	}
 		'''
 	}
 	
@@ -223,19 +223,31 @@ class SimulatorGenerator implements IGenerator {
 	}
 		
 	def dispatch serialize(StringInstanceImpl stringInstance) {
-		''''«stringInstance.value»' '''
+		'''"«stringInstance.value»"'''
 	}
 	
 	def dispatch serialize(IntInstanceImpl intInstance) {
 		'''«intInstance.value»'''
 	}
 	
+	def dispatch serializeStringWithSingleQuote(StringInstanceImpl stringInstance) {
+		''''«stringInstance.value»' '''
+	}	
+	
 	def dispatch generateJsonPathCondition(TelemetryUnaryConditionImpl condition) {
-		'''"$.[?(@.Property=='«condition.telemetry.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
+		if (condition.value.class == StringInstanceImpl) {
+			'''"$.[?(@.Property=='«condition.telemetry.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«(condition.value as StringInstanceImpl).serializeStringWithSingleQuote»)]"'''
+		} else {
+			'''"$.[?(@.Property=='«condition.telemetry.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
+		}
 	}
 	
 	def dispatch generateJsonPathCondition(PropertyUnaryConditionImpl condition) {
-		'''"$.[?(@.Property=='«condition.property.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
+		if (condition.value.class == StringInstanceImpl) {
+			'''"$.[?(@.Property=='«condition.property.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«(condition.value as StringInstanceImpl).serializeStringWithSingleQuote»)]"'''
+		} else {
+			'''"$.[?(@.Property=='«condition.property.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
+		}
 	}
 	
 	def dispatch serialize(LogAction action) {
