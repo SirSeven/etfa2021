@@ -242,9 +242,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Condition" abstract="true" eSuperTypes="#//InterfaceContent #//DTContent">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Actions" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="actions" upperBound="-1"
         eType="#//ConditionAction" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Continue" lowerBound="1"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="continue" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UnaryCondition" abstract="true" eSuperTypes="#//Condition">
@@ -270,9 +270,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionAction" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="LogAction" eSuperTypes="#//ConditionAction">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="LogLevel" lowerBound="1"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="logLevel" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Message" lowerBound="1"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
 </ecore:EPackage>

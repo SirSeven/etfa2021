@@ -236,17 +236,17 @@ class SimulatorGenerator implements IGenerator {
 	
 	def dispatch generateJsonPathCondition(TelemetryUnaryConditionImpl condition) {
 		if (condition.value.class == StringInstanceImpl) {
-			'''"$.[?(@.Property=='«condition.telemetry.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«(condition.value as StringInstanceImpl).serializeStringWithSingleQuote»)]"'''
+			'''"$.*[?(@.Property=='«condition.telemetry.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«(condition.value as StringInstanceImpl).serializeStringWithSingleQuote»)]"'''
 		} else {
-			'''"$.[?(@.Property=='«condition.telemetry.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
+			'''"$.*[?(@.Property=='«condition.telemetry.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
 		}
 	}
 	
 	def dispatch generateJsonPathCondition(PropertyUnaryConditionImpl condition) {
 		if (condition.value.class == StringInstanceImpl) {
-			'''"$.[?(@.Property=='«condition.property.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«(condition.value as StringInstanceImpl).serializeStringWithSingleQuote»)]"'''
+			'''"$.*[?(@.Property=='«condition.property.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«(condition.value as StringInstanceImpl).serializeStringWithSingleQuote»)]"'''
 		} else {
-			'''"$.[?(@.Property=='«condition.property.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
+			'''"$.*[?(@.Property=='«condition.property.displayName»'&&@.Value«SimulatorGeneratorHelper.getInverseOperationSign(condition.operation)»«condition.value.serialize»)]"'''
 		}
 	}
 	
@@ -321,7 +321,7 @@ class SimulatorGenerator implements IGenerator {
 		var firstWritten = false
 		val validationsContent = '''
 		{
-			"Validators": {
+			"validators": {
 			«FOR i : 0..<interfaces.size»
 				«val interface  = interfaces.get(i)»
 				«val typeConditions = interface.contents.filter[content|content instanceof Condition]»
